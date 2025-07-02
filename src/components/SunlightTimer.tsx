@@ -24,7 +24,25 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
+// Utility functions for query string handling
+const getQueryParam = (name: string): string | null => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+};
 
+const updateQueryParams = (params: Record<string, string | number>) => {
+  const url = new URL(window.location.href);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== '') {
+      url.searchParams.set(key, String(value));
+    } else {
+      url.searchParams.delete(key);
+    }
+  });
+
+  // Update URL without reloading the page
+  window.history.replaceState({}, '', url.toString());
+};
 
 interface SunPositionData {
   time: Date;
@@ -47,12 +65,51 @@ const MapUpdater: React.FC<{ lat: number; lon: number }> = ({ lat, lon }) => {
   return null;
 };
 const SunlightTimer: React.FC = () => {
-  const [lat, setLat] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LAT));
-  const [lon, setLon] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LON));
-  const [azm, setAzm] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_AZM));
+  // Initialize state with query parameters or defaults
+  const getInitialLat = (): number => {
+    const queryLat = getQueryParam('lat');
+    if (queryLat !== null) {
+      const parsed = parseFloat(queryLat);
+      if (!isNaN(parsed) && parsed >= -90 && parsed <= 90) {
+        return parsed;
+      }
+    }
+    return parseFloat(import.meta.env.PUBLIC_DEFAULT_LAT);
+  };
+
+  const getInitialLon = (): number => {
+    const queryLon = getQueryParam('lon');
+    if (queryLon !== null) {
+      const parsed = parseFloat(queryLon);
+      if (!isNaN(parsed) && parsed >= -180 && parsed <= 180) {
+        return parsed;
+      }
+    }
+    return parseFloat(import.meta.env.PUBLIC_DEFAULT_LON);
+  };
+
+  const getInitialAzm = (): number => {
+    const queryAzm = getQueryParam('azm');
+    if (queryAzm !== null) {
+      const parsed = parseFloat(queryAzm);
+      if (!isNaN(parsed) && parsed >= -45 && parsed <= 45) {
+        return parsed;
+      }
+    }
+    return parseFloat(import.meta.env.PUBLIC_DEFAULT_AZM);
+  };
+
+  const [lat, setLat] = useState<number>(getInitialLat);
+  const [lon, setLon] = useState<number>(getInitialLon);
+  const [azm, setAzm] = useState<number>(getInitialAzm);
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [sunPositionData, setSunPositionData] = useState<SunPositionData[]>([]);
   const [sunTimes, setSunTimes] = useState<{ sunrise: Date; sunset: Date } | null>(null);
+
+  // Update query parameters when lat, lon, or azm change
+  useEffect(() => {
+    updateQueryParams({ lat, lon, azm });
+  }, [lat, lon, azm]);
 
   const computeSunPositionData = () => {
     const intervalMinutes = 15;
