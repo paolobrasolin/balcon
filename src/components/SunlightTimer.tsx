@@ -14,6 +14,7 @@ import {
   Divider,
 } from '@mui/material';
 import { Calculate } from '@mui/icons-material';
+import SunRays from './SunRays';
 
 // Fix for default markers in react-leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -198,10 +199,10 @@ const SunlightTimer: React.FC = () => {
     computeIntensityData(); // Also compute intensity data
   };
 
-  // Compute times on initial load
+  // Compute times on initial load and when date changes
   useEffect(() => {
     computeTimes();
-  }, []); // Only run once on mount
+  }, [date]); // Run when date changes
 
   const formatTimes = (times: Date[]): string => {
     return times.map(t => t.toTimeString().slice(0, 5)).join(', ') || 'No direct light';
@@ -477,6 +478,7 @@ const SunlightTimer: React.FC = () => {
               }}
             />
           ))}
+          <SunRays lat={lat} lon={lon} date={date} />
         </MapContainer>
       </Paper>
     </Box>
