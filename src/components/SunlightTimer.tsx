@@ -36,9 +36,9 @@ const MapUpdater: React.FC<{ lat: number; lon: number; orientation: number }> = 
 };
 
 const SunlightTimer: React.FC = () => {
-  const [lat, setLat] = useState<number>(0);
-  const [lon, setLon] = useState<number>(0);
-  const [orientation, setOrientation] = useState<number>(0);
+  const [lat, setLat] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LAT));
+  const [lon, setLon] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LON));
+  const [orientation, setOrientation] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_ORIENTATION));
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [results, setResults] = useState<Results>({ east: [], south: [], west: [], north: [] });
 
