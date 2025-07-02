@@ -12,35 +12,30 @@
         pkgs = import nixpkgs {inherit system;};
       in {
         devShells.default = pkgs.mkShell {
-          packages = [pkgs.bun];
+          packages = with pkgs; [nodejs pnpm];
         };
         packages = rec {
-          nodeModules = pkgs.stdenv.mkDerivation {
-            name = "node-modules";
+          balcon = pkgs.stdenv.mkDerivation (finalAttrs: {
+            pname = "balcon";
+            version = "0.1.0";
             src = ./.;
-            buildInputs = [pkgs.bun];
+            buildInputs = with pkgs; [
+              nodejs
+              pnpm
+              pnpm.configHook
+            ];
+            pnpmDeps = pkgs.pnpm.fetchDeps {
+              inherit (finalAttrs) pname version src;
+              hash = "sha256-iGfhqaos1Tly0hQn7UXew2JX/+4hyb50tOSz71OfgQk=";
+            };
             buildPhase = ''
-              bun install --frozen-lockfile
+              pnpm run build
             '';
-            installPhase = ''
-              mkdir -p $out
-              cp -r node_modules $out/
-            '';
-          };
-          balcon = pkgs.stdenv.mkDerivation {
-            name = "balcon";
-            src = ./.;
-            buildInputs = [pkgs.bun];
-            configurePhase = ''
-              ln -s ${nodeModules}/node_modules node_modules
-            '';
-            buildPhase = ''
-              bun run build
-            '';
+
             installPhase = ''
               cp -r dist $out
             '';
-          };
+          });
           default = balcon;
         };
       }
