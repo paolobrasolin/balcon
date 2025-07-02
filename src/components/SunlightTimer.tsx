@@ -108,8 +108,11 @@ const SunlightTimer: React.FC = () => {
     const times: TimeResult[] = [];
     for (let d = new Date(start); d <= end; d.setMinutes(d.getMinutes() + intervalMinutes)) {
       const pos = SunCalc.getPosition(d, lat, lon);
-      let azimuth = (pos.azimuth * 180 / Math.PI + 180 + orientation) % 360;
-      times.push({ time: new Date(d), azimuth });
+      // Convert SunCalc azimuth (0 = North) to our system and add orientation
+      let azimuth = (pos.azimuth + Math.PI + orientation * Math.PI / 180) % (2 * Math.PI);
+      // Convert to degrees for the time window calculations
+      let azimuthDegrees = (azimuth * 180 / Math.PI) % 360;
+      times.push({ time: new Date(d), azimuth: azimuthDegrees });
     }
 
     const newResults: Results = { east: [], south: [], west: [], north: [] };
@@ -135,7 +138,7 @@ const SunlightTimer: React.FC = () => {
 
   const getPolygonCorners = () => {
     const sizeMeters = 10; // 10 meter square
-    const angleRad = orientation * Math.PI / 180;
+    const orientationRad = orientation * Math.PI / 180;
 
     // Convert meters to lat/lon offsets
     // 1 degree latitude ≈ 111,320 meters
@@ -150,8 +153,8 @@ const SunlightTimer: React.FC = () => {
       [0.5, -0.5]
     ].map(([dx, dy]) => {
       // Apply rotation
-      const dxRot = dx * Math.cos(angleRad) - dy * Math.sin(angleRad);
-      const dyRot = dx * Math.sin(angleRad) + dy * Math.cos(angleRad);
+      const dxRot = dx * Math.cos(orientationRad) - dy * Math.sin(orientationRad);
+      const dyRot = dx * Math.sin(orientationRad) + dy * Math.cos(orientationRad);
 
       // Convert to lat/lon coordinates
       const newLat = lat + dyRot * latOffset;
@@ -336,25 +339,25 @@ const SunlightTimer: React.FC = () => {
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#FFD300"
-                  sideAzimuth={90 + orientation} // East side
+                  sideAzimuth={(90 + orientation) * Math.PI / 180} // East side
                   label="East"
                 />
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#FF0000"
-                  sideAzimuth={180 + orientation} // South side
+                  sideAzimuth={(180 + orientation) * Math.PI / 180} // South side
                   label="South"
                 />
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#3914AF"
-                  sideAzimuth={270 + orientation} // West side
+                  sideAzimuth={(270 + orientation) * Math.PI / 180} // West side
                   label="West"
                 />
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#00CC00"
-                  sideAzimuth={0 + orientation} // North side
+                  sideAzimuth={(0 + orientation) * Math.PI / 180} // North side
                   label="North"
                 />
               </Box>

@@ -2,14 +2,14 @@ import React from 'react';
 import { Typography, Box } from '@mui/material';
 
 interface SunPosition {
-  azimuth: number; // in radians, 0 = North, π/2 = East, π = South, 3π/2 = West
+  azimuth: number; // in radians, 0 = North, π/2 = East, π = South, 3π/2 = West (SunCalc format)
   altitude: number; // in radians, 0 = horizon, π/2 = zenith
 }
 
 interface SunIntensityBarProps {
   sunPositions: Array<{ time: Date; position: SunPosition }>;
   color: string;
-  sideAzimuth: number; // azimuth of the side in degrees from North
+  sideAzimuth: number; // azimuth of the side in radians from North
   label: string;
 }
 
@@ -19,18 +19,18 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
   sideAzimuth,
   label
 }) => {
-  /**
+    /**
    * Calculate sunlight intensity for a specific side
    * @param sunPosition Sun position data
-   * @param sideAzimuthDegrees Azimuth of the side in degrees from North
+   * @param sideAzimuthRadians Azimuth of the side in radians from North
    * @returns Intensity value (0-1, where 1 is maximum intensity)
    */
-  const calculateIntensity = (sunPosition: SunPosition, sideAzimuthDegrees: number): number => {
+  const calculateIntensity = (sunPosition: SunPosition, sideAzimuthRadians: number): number => {
     const { azimuth: sunAzimuth, altitude: sunAltitude } = sunPosition;
-
+    
     // Convert sun position to 3D direction vector
-    // SunCalc returns azimuth (0-360°) and altitude (0-90°)
-    const azimuthRad = sunAzimuth; // Already in radians, 0 = North, π/2 = East
+    // SunCalc returns azimuth and altitude in radians
+    const azimuthRad = sunAzimuth; // Already in radians, 0 = North, π/2 = East, π = South, 3π/2 = West
     const altitudeRad = sunAltitude; // Already in radians, 0 = horizon, π/2 = zenith
 
     // Convert to 3D direction vector (x, y, z)
@@ -42,12 +42,10 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
     };
 
     // Calculate surface normal for this side
-    const sideAzimuthRad = (sideAzimuthDegrees * Math.PI) / 180;
-
     // Surface normal points outward from the side
     const sideNormal = {
-      x: Math.sin(sideAzimuthRad),
-      y: Math.cos(sideAzimuthRad),
+      x: Math.sin(sideAzimuthRadians),
+      y: Math.cos(sideAzimuthRadians),
       z: 0
     };
 
