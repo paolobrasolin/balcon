@@ -19,7 +19,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
   sideAzimuth,
   label
 }) => {
-    /**
+  /**
    * Calculate sunlight intensity for a specific side
    * @param sunPosition Sun position data
    * @param sideAzimuthRadians Azimuth of the side in radians from North
@@ -27,7 +27,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
    */
   const calculateIntensity = (sunPosition: SunPosition, sideAzimuthRadians: number): number => {
     const { azimuth: sunAzimuth, altitude: sunAltitude } = sunPosition;
-    
+
     // Convert sun position to 3D direction vector
     // SunCalc returns azimuth and altitude in radians
     const azimuthRad = sunAzimuth; // Already in radians, 0 = North, π/2 = East, π = South, 3π/2 = West
@@ -63,14 +63,25 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Typography variant="body2" sx={{ width: 40, fontSize: '0.75rem' }}>
+      <Typography variant="body2" sx={{
+        width: 40,
+        fontSize: '0.75rem',
+        color: 'white',
+        fontWeight: 'bold',
+        backgroundColor: color,
+        borderRadius: 0.5,
+        textAlign: 'center',
+        py: 0.25,
+        px: 0.5,
+        textShadow: '0px 0px 2px rgba(0,0,0,1), 0px 0px 4px rgba(0,0,0,1)'
+      }}>
         {label}
       </Typography>
       <Box sx={{
         flex: 1,
         height: 20,
         position: 'relative',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'transparent',
         borderRadius: 1,
         overflow: 'hidden'
       }}>
@@ -87,7 +98,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
                 left: `${(index / sunPositions.length) * 100}%`,
                 width: `${width}%`,
                 height: '100%',
-                backgroundColor: color,
+                backgroundColor: 'white',
                 opacity: opacity,
                 transition: 'opacity 0.2s'
               }}
