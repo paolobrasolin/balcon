@@ -37,7 +37,7 @@ interface SunPositionData {
 
 
 // Component to handle map updates
-const MapUpdater: React.FC<{ lat: number; lon: number; azm: number }> = ({ lat, lon, azm }) => {
+const MapUpdater: React.FC<{ lat: number; lon: number }> = ({ lat, lon }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -227,7 +227,7 @@ const SunlightTimer: React.FC = () => {
               zoom={18}
               style={{ height: '100%', width: '100%' }}
             >
-              <MapUpdater lat={lat} lon={lon} azm={-azm} />
+              <MapUpdater lat={lat} lon={lon} />
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; OpenStreetMap contributors'
