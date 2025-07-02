@@ -3,6 +3,17 @@ import { MapContainer, TileLayer, Marker, Polygon, useMap } from 'react-leaflet'
 import L from 'leaflet';
 import SunCalc from 'suncalc';
 import 'leaflet/dist/leaflet.css';
+import {
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+} from '@mui/material';
+import { Calculate } from '@mui/icons-material';
 
 // Fix for default markers in react-leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -96,81 +107,89 @@ const SunlightTimer: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Sunlight Window Timer</h1>
+    <Box>
+      <Typography variant="h2" component="h1" gutterBottom sx={{ mb: 4 }}>
+        Sunlight Window Timer
+      </Typography>
 
-      <div style={{ marginBottom: '1em' }}>
-        <label style={{ display: 'block', margin: '1em 0 0.5em' }}>
-          Latitude:
-          <input
-            type="number"
-            step="0.0001"
-            value={lat}
-            onChange={(e) => setLat(parseFloat(e.target.value))}
-            style={{ width: '100%', padding: '0.5em' }}
-          />
-        </label>
+      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
+            <TextField
+              fullWidth
+              label="Latitude"
+              type="number"
+              inputProps={{ step: 0.0001 }}
+              value={lat}
+              onChange={(e) => setLat(parseFloat(e.target.value))}
+            />
+          </Box>
+          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
+            <TextField
+              fullWidth
+              label="Longitude"
+              type="number"
+              inputProps={{ step: 0.0001 }}
+              value={lon}
+              onChange={(e) => setLon(parseFloat(e.target.value))}
+            />
+          </Box>
+          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
+            <TextField
+              fullWidth
+              label="Orientation (degrees from North)"
+              type="number"
+              inputProps={{ step: 1 }}
+              value={orientation}
+              onChange={(e) => setOrientation(parseFloat(e.target.value))}
+            />
+          </Box>
+          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
+            <TextField
+              fullWidth
+              label="Date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Box>
+        </Box>
 
-        <label style={{ display: 'block', margin: '1em 0 0.5em' }}>
-          Longitude:
-          <input
-            type="number"
-            step="0.0001"
-            value={lon}
-            onChange={(e) => setLon(parseFloat(e.target.value))}
-            style={{ width: '100%', padding: '0.5em' }}
-          />
-        </label>
+        <Box sx={{ mt: 3, textAlign: 'center' }}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={computeTimes}
+            startIcon={<Calculate />}
+          >
+            Compute Times
+          </Button>
+        </Box>
+      </Paper>
 
-        <label style={{ display: 'block', margin: '1em 0 0.5em' }}>
-          Orientation (degrees from North):
-          <input
-            type="number"
-            step="1"
-            value={orientation}
-            onChange={(e) => setOrientation(parseFloat(e.target.value))}
-            style={{ width: '100%', padding: '0.5em' }}
-          />
-        </label>
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            Results
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+            {Object.entries(results).map(([direction, times]) => (
+              <Box key={direction} sx={{ flex: '1 1 200px', minWidth: 0 }}>
+                <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold' }}>
+                  {direction.toUpperCase()} Window:
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: 'monospace', mt: 0.5 }}>
+                  {formatTimes(times)}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </CardContent>
+      </Card>
 
-        <label style={{ display: 'block', margin: '1em 0 0.5em' }}>
-          Date:
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            style={{ width: '100%', padding: '0.5em' }}
-          />
-        </label>
-      </div>
-
-      <button
-        onClick={computeTimes}
-        style={{
-          marginTop: '1em',
-          padding: '0.5em 1em',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontSize: '14px'
-        }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#007bff'}
-      >
-        Compute Times
-      </button>
-
-      <div className="results-container">
-        {Object.entries(results).map(([direction, times]) => (
-          <div key={direction}>
-            <strong>{direction.toUpperCase()} Window:</strong> {formatTimes(times)}
-          </div>
-        ))}
-      </div>
-
-      <div style={{ height: '400px', marginTop: '1em' }}>
+      <Paper elevation={3} sx={{ height: 400, overflow: 'hidden', borderRadius: 2 }}>
         <MapContainer
           center={[lat, lon]}
           zoom={18}
@@ -192,8 +211,8 @@ const SunlightTimer: React.FC = () => {
             }}
           />
         </MapContainer>
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 };
 
