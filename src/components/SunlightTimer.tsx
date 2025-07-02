@@ -92,7 +92,7 @@ const SunlightTimer: React.FC = () => {
 
   const getPolygonCorners = () => {
     const sizeMeters = 10; // 10 meter square
-    const orientationRad = orientation * Math.PI / 180;
+    const orientationRad = - orientation * Math.PI / 180;
 
     // Convert meters to lat/lon offsets
     // 1 degree latitude ≈ 111,320 meters
@@ -190,7 +190,7 @@ const SunlightTimer: React.FC = () => {
             zoom={18}
             style={{ height: '100%', width: '100%' }}
           >
-            <MapUpdater lat={lat} lon={lon} orientation={orientation} />
+            <MapUpdater lat={lat} lon={lon} orientation={-orientation} />
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; OpenStreetMap contributors'
@@ -227,25 +227,25 @@ const SunlightTimer: React.FC = () => {
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#FFD300"
-                sideAzimuth={(270 + orientation) * Math.PI / 180}
+                sideAzimuth={(270 - orientation) * Math.PI / 180}
                 label="East"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#FF0000"
-                sideAzimuth={(0 + orientation) * Math.PI / 180}
+                sideAzimuth={(0 - orientation) * Math.PI / 180}
                 label="South"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#3914AF"
-                sideAzimuth={(90 + orientation) * Math.PI / 180}
+                sideAzimuth={(90 - orientation) * Math.PI / 180}
                 label="West"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#00CC00"
-                sideAzimuth={(180 + orientation) * Math.PI / 180}
+                sideAzimuth={(180 - orientation) * Math.PI / 180}
                 label="North"
               />
             </Box>
