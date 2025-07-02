@@ -6,14 +6,12 @@ import 'leaflet/dist/leaflet.css';
 import {
   Typography,
   TextField,
-  Button,
   Paper,
   Box,
   Card,
   CardContent,
   Divider,
 } from '@mui/material';
-import { Calculate } from '@mui/icons-material';
 import SunRays from './SunRays';
 import SunIntensityBar from './SunIntensityBar';
 import SunIntensityAxis from './SunIntensityAxis';
@@ -26,17 +24,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-interface TimeResult {
-  time: Date;
-  azimuth: number;
-}
 
-interface Results {
-  east: Date[];
-  south: Date[];
-  west: Date[];
-  north: Date[];
-}
 
 interface SunPositionData {
   time: Date;
@@ -64,7 +52,6 @@ const SunlightTimer: React.FC = () => {
   const [lon, setLon] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LON));
   const [orientation, setOrientation] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_ORIENTATION));
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [results, setResults] = useState<Results>({ east: [], south: [], west: [], north: [] });
   const [sunPositionData, setSunPositionData] = useState<SunPositionData[]>([]);
   const [sunTimes, setSunTimes] = useState<{ sunrise: Date; sunset: Date } | null>(null);
 
@@ -98,44 +85,10 @@ const SunlightTimer: React.FC = () => {
     setSunPositionData(sunPositions);
   };
 
-  const computeTimes = () => {
-    const intervalMinutes = 10;
-    const selectedDate = new Date(date);
-    selectedDate.setHours(0, 0, 0, 0);
-    const start = new Date(selectedDate);
-    const end = new Date(selectedDate);
-    end.setHours(23, 59, 59, 999);
-
-    const times: TimeResult[] = [];
-    for (let d = new Date(start); d <= end; d.setMinutes(d.getMinutes() + intervalMinutes)) {
-      const pos = SunCalc.getPosition(d, lat, lon);
-      // Convert SunCalc azimuth (0 = North) to our system and add orientation
-      let azimuth = (pos.azimuth + Math.PI + orientation * Math.PI / 180) % (2 * Math.PI);
-      // Convert to degrees for the time window calculations
-      let azimuthDegrees = (azimuth * 180 / Math.PI) % 360;
-      times.push({ time: new Date(d), azimuth: azimuthDegrees });
-    }
-
-    const newResults: Results = { east: [], south: [], west: [], north: [] };
-    for (const t of times) {
-      if (t.azimuth >= 80 && t.azimuth <= 100) newResults.east.push(t.time);
-      else if (t.azimuth >= 170 && t.azimuth <= 190) newResults.south.push(t.time);
-      else if (t.azimuth >= 260 && t.azimuth <= 280) newResults.west.push(t.time);
-      else if ((t.azimuth >= 350 && t.azimuth <= 360) || (t.azimuth >= 0 && t.azimuth <= 10)) newResults.north.push(t.time);
-    }
-
-    setResults(newResults);
-    computeSunPositionData(); // Also compute sun position data
-  };
-
-  // Compute times on initial load and when date changes
+  // Compute sun position data on initial load and when date changes
   useEffect(() => {
-    computeTimes();
+    computeSunPositionData();
   }, [date]); // Run when date changes
-
-  const formatTimes = (times: Date[]): string => {
-    return times.map(t => t.toTimeString().slice(0, 5)).join(', ') || 'No direct light';
-  };
 
   const getPolygonCorners = () => {
     const sizeMeters = 10; // 10 meter square
@@ -230,39 +183,7 @@ const SunlightTimer: React.FC = () => {
             />
           </Box>
         </Box>
-
-        <Box sx={{ mt: 3, textAlign: 'center' }}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={computeTimes}
-            startIcon={<Calculate />}
-          >
-            Compute Times
-          </Button>
-        </Box>
       </Paper>
-
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Results
-          </Typography>
-          <Divider sx={{ mb: 2 }} />
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-            {Object.entries(results).map(([direction, times]) => (
-              <Box key={direction} sx={{ flex: '1 1 200px', minWidth: 0 }}>
-                <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold' }}>
-                  {direction.toUpperCase()} Window:
-                </Typography>
-                <Typography variant="body2" sx={{ fontFamily: 'monospace', mt: 0.5 }}>
-                  {formatTimes(times)}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-        </CardContent>
-      </Card>
 
       {/* Intensity Diagram */}
       {sunPositionData.length > 0 && (
