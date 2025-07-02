@@ -5,5 +5,8 @@ export default defineConfig({
   plugins: [pluginReact()],
   server: {
     "base": "/balcon/",
-  }
+  },
+  html: {
+    "title": "balcón",
+  },
 });
