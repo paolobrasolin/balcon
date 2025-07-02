@@ -339,25 +339,25 @@ const SunlightTimer: React.FC = () => {
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#FFD300"
-                  sideAzimuth={(90 + orientation) * Math.PI / 180} // East side
+                  sideAzimuth={(270 + orientation) * Math.PI / 180}
                   label="East"
                 />
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#FF0000"
-                  sideAzimuth={(180 + orientation) * Math.PI / 180} // South side
+                  sideAzimuth={(0 + orientation) * Math.PI / 180}
                   label="South"
                 />
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#3914AF"
-                  sideAzimuth={(270 + orientation) * Math.PI / 180} // West side
+                  sideAzimuth={(90 + orientation) * Math.PI / 180}
                   label="West"
                 />
                 <SunIntensityBar
                   sunPositions={sunPositionData}
                   color="#00CC00"
-                  sideAzimuth={(0 + orientation) * Math.PI / 180} // North side
+                  sideAzimuth={(180 + orientation) * Math.PI / 180}
                   label="North"
                 />
               </Box>
