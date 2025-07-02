@@ -16,6 +16,7 @@ import {
 import { Calculate } from '@mui/icons-material';
 import SunRays from './SunRays';
 import SunIntensityBar from './SunIntensityBar';
+import SunIntensityAxis from './SunIntensityAxis';
 
 // Fix for default markers in react-leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -272,95 +273,33 @@ const SunlightTimer: React.FC = () => {
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
-            {/* Legend */}
-            {sunTimes && (
-              <Box sx={{ mb: 2, display: 'flex', gap: 3, fontSize: '0.75rem', color: 'text.secondary' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ width: 12, height: 12, backgroundColor: '#ff9800', borderRadius: 1 }} />
-                  <span>Sunrise: {sunTimes.sunrise.toTimeString().slice(0, 5)}</span>
-                </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box sx={{ width: 12, height: 12, backgroundColor: '#f57c00', borderRadius: 1 }} />
-                  <span>Sunset: {sunTimes.sunset.toTimeString().slice(0, 5)}</span>
-                </Box>
-              </Box>
-            )}
-            <Box sx={{ height: 200, position: 'relative' }}>
-              {/* Time axis labels */}
-              <Box sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                mb: 1,
-                px: 2,
-                fontSize: '0.75rem',
-                color: 'text.secondary'
-              }}>
-                <span>00:00</span>
-                <span>06:00</span>
-                <span>12:00</span>
-                <span>18:00</span>
-                <span>23:59</span>
-              </Box>
-
-              {/* Sunrise/Sunset markers */}
-              {sunTimes && (
-                <Box sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 20,
-                  pointerEvents: 'none',
-                  zIndex: 1
-                }}>
-                  {/* Sunrise marker */}
-                  <Box sx={{
-                    position: 'absolute',
-                    left: `${((sunTimes.sunrise.getHours() * 60 + sunTimes.sunrise.getMinutes()) / (24 * 60)) * 100}%`,
-                    width: 2,
-                    height: '100%',
-                    backgroundColor: '#ff9800',
-                    transform: 'translateX(-50%)'
-                  }} />
-                  {/* Sunset marker */}
-                  <Box sx={{
-                    position: 'absolute',
-                    left: `${((sunTimes.sunset.getHours() * 60 + sunTimes.sunset.getMinutes()) / (24 * 60)) * 100}%`,
-                    width: 2,
-                    height: '100%',
-                    backgroundColor: '#f57c00',
-                    transform: 'translateX(-50%)'
-                  }} />
-                </Box>
-              )}
-
-              {/* Intensity bars */}
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, height: 150 }}>
-                <SunIntensityBar
-                  sunPositions={sunPositionData}
-                  color="#FFD300"
-                  sideAzimuth={(270 + orientation) * Math.PI / 180}
-                  label="East"
-                />
-                <SunIntensityBar
-                  sunPositions={sunPositionData}
-                  color="#FF0000"
-                  sideAzimuth={(0 + orientation) * Math.PI / 180}
-                  label="South"
-                />
-                <SunIntensityBar
-                  sunPositions={sunPositionData}
-                  color="#3914AF"
-                  sideAzimuth={(90 + orientation) * Math.PI / 180}
-                  label="West"
-                />
-                <SunIntensityBar
-                  sunPositions={sunPositionData}
-                  color="#00CC00"
-                  sideAzimuth={(180 + orientation) * Math.PI / 180}
-                  label="North"
-                />
-              </Box>
+            {/* Intensity bars */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <SunIntensityAxis sunTimes={sunTimes} />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#FFD300"
+                sideAzimuth={(270 + orientation) * Math.PI / 180}
+                label="East"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#FF0000"
+                sideAzimuth={(0 + orientation) * Math.PI / 180}
+                label="South"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#3914AF"
+                sideAzimuth={(90 + orientation) * Math.PI / 180}
+                label="West"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#00CC00"
+                sideAzimuth={(180 + orientation) * Math.PI / 180}
+                label="North"
+              />
             </Box>
           </CardContent>
         </Card>
