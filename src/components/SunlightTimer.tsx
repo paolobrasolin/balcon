@@ -137,7 +137,7 @@ const SunlightTimer: React.FC = () => {
   return (
     <Box>
       <Typography variant="h2" component="h1" gutterBottom sx={{ mb: 4 }}>
-        Sunlight Window Timer
+        balcón
       </Typography>
 
       {/* Inputs and Map side by side */}
