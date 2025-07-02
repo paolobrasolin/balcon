@@ -37,7 +37,7 @@ interface SunPositionData {
 
 
 // Component to handle map updates
-const MapUpdater: React.FC<{ lat: number; lon: number; orientation: number }> = ({ lat, lon, orientation }) => {
+const MapUpdater: React.FC<{ lat: number; lon: number; azm: number }> = ({ lat, lon, azm }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -46,11 +46,10 @@ const MapUpdater: React.FC<{ lat: number; lon: number; orientation: number }> = 
 
   return null;
 };
-
 const SunlightTimer: React.FC = () => {
   const [lat, setLat] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LAT));
   const [lon, setLon] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_LON));
-  const [orientation, setOrientation] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_ORIENTATION));
+  const [azm, setAzm] = useState<number>(parseFloat(import.meta.env.PUBLIC_DEFAULT_AZM));
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [sunPositionData, setSunPositionData] = useState<SunPositionData[]>([]);
   const [sunTimes, setSunTimes] = useState<{ sunrise: Date; sunset: Date } | null>(null);
@@ -92,7 +91,7 @@ const SunlightTimer: React.FC = () => {
 
   const getPolygonCorners = () => {
     const sizeMeters = 10; // 10 meter square
-    const orientationRad = - orientation * Math.PI / 180;
+    const orientationRad = - azm * Math.PI / 180;
 
     // Convert meters to lat/lon offsets
     // 1 degree latitude ≈ 111,320 meters
@@ -195,11 +194,11 @@ const SunlightTimer: React.FC = () => {
                 min: -45,
                 max: 45
               }}
-              value={orientation}
+              value={azm}
               onChange={(e) => {
                 const value = parseFloat(e.target.value);
                 if (!isNaN(value) && value >= -45 && value <= 45) {
-                  setOrientation(value);
+                  setAzm(value);
                 }
               }}
               helperText="Range: -45° (NW) to +45° (NE)"
@@ -228,7 +227,7 @@ const SunlightTimer: React.FC = () => {
               zoom={18}
               style={{ height: '100%', width: '100%' }}
             >
-              <MapUpdater lat={lat} lon={lon} orientation={-orientation} />
+              <MapUpdater lat={lat} lon={lon} azm={-azm} />
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; OpenStreetMap contributors'
@@ -266,28 +265,28 @@ const SunlightTimer: React.FC = () => {
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#FFD300"
-                sideAzimuth={(270 - orientation) * Math.PI / 180}
+                sideAzimuth={(270 - azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="East"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#FF0000"
-                sideAzimuth={(0 - orientation) * Math.PI / 180}
+                sideAzimuth={(0 - azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="South"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#3914AF"
-                sideAzimuth={(90 - orientation) * Math.PI / 180}
+                sideAzimuth={(90 - azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="West"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#00CC00"
-                sideAzimuth={(180 - orientation) * Math.PI / 180}
+                sideAzimuth={(180 - azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="North"
               />
