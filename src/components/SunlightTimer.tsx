@@ -140,9 +140,14 @@ const SunlightTimer: React.FC = () => {
         Sunlight Window Timer
       </Typography>
 
-      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
+      {/* Inputs and Map side by side */}
+      <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
+        {/* Inputs stacked vertically */}
+        <Paper elevation={3} sx={{ p: 3, width: 300, flexShrink: 0 }}>
+          <Typography variant="h6" gutterBottom>
+            Location & Settings
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
               fullWidth
               label="Latitude"
@@ -151,8 +156,6 @@ const SunlightTimer: React.FC = () => {
               value={lat}
               onChange={(e) => setLat(parseFloat(e.target.value))}
             />
-          </Box>
-          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
             <TextField
               fullWidth
               label="Longitude"
@@ -161,8 +164,6 @@ const SunlightTimer: React.FC = () => {
               value={lon}
               onChange={(e) => setLon(parseFloat(e.target.value))}
             />
-          </Box>
-          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
             <TextField
               fullWidth
               label="Orientation (degrees from North)"
@@ -171,8 +172,6 @@ const SunlightTimer: React.FC = () => {
               value={orientation}
               onChange={(e) => setOrientation(parseFloat(e.target.value))}
             />
-          </Box>
-          <Box sx={{ flex: '1 1 200px', minWidth: 0 }}>
             <TextField
               fullWidth
               label="Date"
@@ -182,10 +181,38 @@ const SunlightTimer: React.FC = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Box>
-        </Box>
-      </Paper>
+        </Paper>
 
-      {/* Intensity Diagram */}
+        {/* Map */}
+        <Paper elevation={3} sx={{ height: 400, overflow: 'hidden', borderRadius: 2, flex: 1 }}>
+          <MapContainer
+            center={[lat, lon]}
+            zoom={18}
+            style={{ height: '100%', width: '100%' }}
+          >
+            <MapUpdater lat={lat} lon={lon} orientation={orientation} />
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; OpenStreetMap contributors'
+            />
+            <Marker position={[lat, lon]} />
+            {getSidePolygons().map((side) => (
+              <Polyline
+                key={side.name}
+                positions={side.positions}
+                pathOptions={{
+                  color: side.color,
+                  weight: 6,
+                  opacity: 0.8
+                }}
+              />
+            ))}
+            <SunRays lat={lat} lon={lon} date={date} />
+          </MapContainer>
+        </Paper>
+      </Box>
+
+      {/* Intensity Diagram - full width */}
       {sunPositionData.length > 0 && (
         <Card sx={{ mb: 3 }}>
           <CardContent>
@@ -225,33 +252,6 @@ const SunlightTimer: React.FC = () => {
           </CardContent>
         </Card>
       )}
-
-      <Paper elevation={3} sx={{ height: 400, overflow: 'hidden', borderRadius: 2 }}>
-        <MapContainer
-          center={[lat, lon]}
-          zoom={18}
-          style={{ height: '100%', width: '100%' }}
-        >
-          <MapUpdater lat={lat} lon={lon} orientation={orientation} />
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; OpenStreetMap contributors'
-          />
-          <Marker position={[lat, lon]} />
-          {getSidePolygons().map((side) => (
-            <Polyline
-              key={side.name}
-              positions={side.positions}
-              pathOptions={{
-                color: side.color,
-                weight: 6,
-                opacity: 0.8
-              }}
-            />
-          ))}
-          <SunRays lat={lat} lon={lon} date={date} />
-        </MapContainer>
-      </Paper>
     </Box>
   );
 };
