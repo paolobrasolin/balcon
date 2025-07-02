@@ -89,8 +89,14 @@ const SunlightTimer: React.FC = () => {
   };
 
   const getPolygonCorners = () => {
-    const size = 0.0001; // ~5 meters
+    const sizeMeters = 10; // 10 meter square
     const angleRad = orientation * Math.PI / 180;
+
+    // Convert meters to lat/lon offsets
+    // 1 degree latitude ≈ 111,320 meters
+    // 1 degree longitude ≈ 111,320 * cos(latitude) meters
+    const latOffset = sizeMeters / 111320;
+    const lonOffset = sizeMeters / (111320 * Math.cos(lat * Math.PI / 180));
 
     const corners = [
       [0.5, 0.5],
@@ -98,9 +104,15 @@ const SunlightTimer: React.FC = () => {
       [-0.5, -0.5],
       [0.5, -0.5]
     ].map(([dx, dy]) => {
+      // Apply rotation
       const dxRot = dx * Math.cos(angleRad) - dy * Math.sin(angleRad);
       const dyRot = dx * Math.sin(angleRad) + dy * Math.cos(angleRad);
-      return [lat + dyRot * size, lon + dxRot * size] as [number, number];
+
+      // Convert to lat/lon coordinates
+      const newLat = lat + dyRot * latOffset;
+      const newLon = lon + dxRot * lonOffset;
+
+      return [newLat, newLon] as [number, number];
     });
 
     return corners;
