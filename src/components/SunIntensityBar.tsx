@@ -10,6 +10,7 @@ interface SunIntensityBarProps {
   sunPositions: Array<{ time: Date; position: SunPosition }>;
   color: string;
   sideAzimuth: number; // azimuth of the side in radians from North
+  surfaceAltitude: number; // altitude of the surface in radians (0 = vertical, π/2 = horizontal, matching SunCalc convention)
   label: string;
 }
 
@@ -17,6 +18,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
   sunPositions,
   color,
   sideAzimuth,
+  surfaceAltitude,
   label
 }) => {
   /**
@@ -67,12 +69,13 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
   };
 
   /**
-   * Calculate sunlight intensity for a specific side
+   * Calculate sunlight intensity for a surface with given orientation
    * @param sunPosition Sun position data
    * @param sideAzimuthRadians Azimuth of the side in radians from North
+   * @param surfaceAltitudeRadians Altitude of the surface in radians (0 = horizontal, π/2 = vertical)
    * @returns Intensity value (0-1, where 1 is maximum intensity)
    */
-  const calculateIntensity = (sunPosition: SunPosition, sideAzimuthRadians: number): number => {
+  const calculateIntensity = (sunPosition: SunPosition, sideAzimuthRadians: number, surfaceAltitudeRadians: number): number => {
     const { azimuth: sunAzimuth, altitude: sunAltitude } = sunPosition;
 
     // Convert sun position to 3D direction vector
@@ -88,19 +91,21 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
       z: Math.sin(altitudeRad)
     };
 
-    // Calculate surface normal for this side
-    // Surface normal points outward from the side
-    const sideNormal = {
-      x: Math.sin(sideAzimuthRadians),
-      y: Math.cos(sideAzimuthRadians),
-      z: 0
+    // Calculate surface normal for this surface
+    // For vertical walls: surfaceAltitude = 0, normal points horizontally outward
+    // For horizontal roof: surfaceAltitude = π/2, normal points upward
+    // For angled surfaces: normal points at the specified altitude (matching SunCalc convention)
+    const surfaceNormal = {
+      x: Math.sin(sideAzimuthRadians) * Math.cos(surfaceAltitudeRadians),
+      y: Math.cos(sideAzimuthRadians) * Math.cos(surfaceAltitudeRadians),
+      z: Math.sin(surfaceAltitudeRadians)
     };
 
     // Calculate dot product (intensity = dot product of sun direction and surface normal)
     const dotProduct =
-      sunDirection.x * sideNormal.x +
-      sunDirection.y * sideNormal.y +
-      sunDirection.z * sideNormal.z;
+      sunDirection.x * surfaceNormal.x +
+      sunDirection.y * surfaceNormal.y +
+      sunDirection.z * surfaceNormal.z;
 
     // Apply intensity calculation with proper handling of negative values
     // When dot product is negative, the sun is behind the surface (no direct light)
@@ -142,7 +147,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
         overflow: 'hidden'
       }}>
         {sunPositions.map((data, index) => {
-          const intensity = calculateIntensity(data.position, sideAzimuth);
+          const intensity = calculateIntensity(data.position, sideAzimuth, surfaceAltitude);
           const width = 100 / sunPositions.length;
 
           return (
