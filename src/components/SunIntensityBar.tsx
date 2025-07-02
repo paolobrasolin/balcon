@@ -144,7 +144,6 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
         {sunPositions.map((data, index) => {
           const intensity = calculateIntensity(data.position, sideAzimuth);
           const width = 100 / sunPositions.length;
-          const opacity = Math.min(intensity * 2, 1); // Scale intensity for better visibility
 
           return (
             <Box
@@ -155,7 +154,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
                 width: `${width}%`,
                 height: '100%',
                 backgroundColor: 'white',
-                opacity: opacity,
+                opacity: intensity,
                 transition: 'opacity 0.2s'
               }}
             />
