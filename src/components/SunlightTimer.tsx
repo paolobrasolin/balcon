@@ -141,13 +141,15 @@ const SunlightTimer: React.FC = () => {
       </Typography>
 
       {/* Inputs and Map side by side */}
-      <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
+      <Box sx={{ display: 'flex', gap: 3, mb: 3, alignItems: 'stretch' }}>
         {/* Inputs stacked vertically */}
-        <Paper elevation={3} sx={{ p: 3, width: 300, flexShrink: 0 }}>
+        <Paper elevation={3} sx={{ p: 3, width: 300, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h6" gutterBottom>
-            Location & Settings
+            Settings
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Divider sx={{ mb: 4, mt: 1 }} />
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
             <TextField
               fullWidth
               label="Latitude"
@@ -214,31 +216,38 @@ const SunlightTimer: React.FC = () => {
         </Paper>
 
         {/* Map */}
-        <Paper elevation={3} sx={{ height: 400, overflow: 'hidden', borderRadius: 2, flex: 1 }}>
-          <MapContainer
-            center={[lat, lon]}
-            zoom={18}
-            style={{ height: '100%', width: '100%' }}
-          >
-            <MapUpdater lat={lat} lon={lon} orientation={-orientation} />
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; OpenStreetMap contributors'
-            />
-            <Marker position={[lat, lon]} />
-            <SunRays lat={lat} lon={lon} date={date} />
-            {getSidePolygons().map((side) => (
-              <Polyline
-                key={side.name}
-                positions={side.positions}
-                pathOptions={{
-                  color: side.color,
-                  weight: 6,
-                  opacity: 0.8
-                }}
+        <Paper elevation={3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 2 }}>
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h6">
+              Location map and sun position
+            </Typography>
+          </Box>
+          <Box sx={{ flex: 1, width: '100%' }}>
+            <MapContainer
+              center={[lat, lon]}
+              zoom={18}
+              style={{ height: '100%', width: '100%' }}
+            >
+              <MapUpdater lat={lat} lon={lon} orientation={-orientation} />
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; OpenStreetMap contributors'
               />
-            ))}
-          </MapContainer>
+              <Marker position={[lat, lon]} />
+              <SunRays lat={lat} lon={lon} date={date} />
+              {getSidePolygons().map((side) => (
+                <Polyline
+                  key={side.name}
+                  positions={side.positions}
+                  pathOptions={{
+                    color: side.color,
+                    weight: 6,
+                    opacity: 0.8
+                  }}
+                />
+              ))}
+            </MapContainer>
+          </Box>
         </Paper>
       </Box>
 
@@ -247,9 +256,9 @@ const SunlightTimer: React.FC = () => {
         <Card sx={{ mb: 3 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Sunlight Intensity by Side
+              Sunlight intensity by surface
             </Typography>
-            <Divider sx={{ mb: 2 }} />
+            <Divider sx={{ mb: 4, mt: 1 }} />
 
             {/* Intensity bars */}
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
