@@ -56,7 +56,7 @@ const SunlightTimer: React.FC = () => {
   const [sunTimes, setSunTimes] = useState<{ sunrise: Date; sunset: Date } | null>(null);
 
   const computeSunPositionData = () => {
-    const intervalMinutes = 10;
+    const intervalMinutes = 15;
     const selectedDate = new Date(date);
     selectedDate.setHours(0, 0, 0, 0);
     const start = new Date(selectedDate);
