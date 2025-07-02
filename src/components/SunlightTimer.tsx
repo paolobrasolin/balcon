@@ -152,25 +152,55 @@ const SunlightTimer: React.FC = () => {
               fullWidth
               label="Latitude"
               type="number"
-              inputProps={{ step: 0.0001 }}
+              inputProps={{
+                step: 0.0001,
+                min: -90,
+                max: 90
+              }}
               value={lat}
-              onChange={(e) => setLat(parseFloat(e.target.value))}
+              onChange={(e) => {
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value) && value >= -90 && value <= 90) {
+                  setLat(value);
+                }
+              }}
+              helperText="Range: -90° (S) to +90° (N)"
             />
             <TextField
               fullWidth
               label="Longitude"
               type="number"
-              inputProps={{ step: 0.0001 }}
+              inputProps={{
+                step: 0.0001,
+                min: -180,
+                max: 180
+              }}
               value={lon}
-              onChange={(e) => setLon(parseFloat(e.target.value))}
+              onChange={(e) => {
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value) && value >= -180 && value <= 180) {
+                  setLon(value);
+                }
+              }}
+              helperText="Range: -180° (W) to +180° (E)"
             />
             <TextField
               fullWidth
-              label="Orientation (degrees from North)"
+              label="Northern side azimuth"
               type="number"
-              inputProps={{ step: 1 }}
+              inputProps={{
+                step: 1,
+                min: -45,
+                max: 45
+              }}
               value={orientation}
-              onChange={(e) => setOrientation(parseFloat(e.target.value))}
+              onChange={(e) => {
+                const value = parseFloat(e.target.value);
+                if (!isNaN(value) && value >= -45 && value <= 45) {
+                  setOrientation(value);
+                }
+              }}
+              helperText="Range: -45° (NW) to +45° (NE)"
             />
             <TextField
               fullWidth
