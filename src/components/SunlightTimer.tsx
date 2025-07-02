@@ -226,6 +226,7 @@ const SunlightTimer: React.FC = () => {
               attribution='&copy; OpenStreetMap contributors'
             />
             <Marker position={[lat, lon]} />
+            <SunRays lat={lat} lon={lon} date={date} />
             {getSidePolygons().map((side) => (
               <Polyline
                 key={side.name}
@@ -237,7 +238,6 @@ const SunlightTimer: React.FC = () => {
                 }}
               />
             ))}
-            <SunRays lat={lat} lon={lon} date={date} />
           </MapContainer>
         </Paper>
       </Box>
