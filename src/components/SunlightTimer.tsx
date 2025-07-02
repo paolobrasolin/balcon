@@ -187,7 +187,7 @@ const SunlightTimer: React.FC = () => {
             />
             <TextField
               fullWidth
-              label="Northern side azimuth"
+              label="Southern side azimuth"
               type="number"
               inputProps={{
                 step: 1,
@@ -265,28 +265,28 @@ const SunlightTimer: React.FC = () => {
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#FFD300"
-                sideAzimuth={(270 - azm) * Math.PI / 180}
+                sideAzimuth={(270 + azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="East"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#FF0000"
-                sideAzimuth={(0 - azm) * Math.PI / 180}
+                sideAzimuth={(0 + azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="South"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#3914AF"
-                sideAzimuth={(90 - azm) * Math.PI / 180}
+                sideAzimuth={(90 + azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="West"
               />
               <SunIntensityBar
                 sunPositions={sunPositionData}
                 color="#00CC00"
-                sideAzimuth={(180 - azm) * Math.PI / 180}
+                sideAzimuth={(180 + azm) * Math.PI / 180}
                 surfaceAltitude={0}
                 label="North"
               />
