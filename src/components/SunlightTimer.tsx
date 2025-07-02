@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polygon, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polygon, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import SunCalc from 'suncalc';
 import 'leaflet/dist/leaflet.css';
@@ -237,6 +237,20 @@ const SunlightTimer: React.FC = () => {
     return corners;
   };
 
+  const getSidePolygons = () => {
+    const corners = getPolygonCorners();
+
+    // Define the sides with their colors
+    const sides = [
+      { name: 'east', color: '#FFD300', positions: [corners[0], corners[3]] },
+      { name: 'south', color: '#FF0000', positions: [corners[3], corners[2]] },
+      { name: 'west', color: '#3914AF', positions: [corners[2], corners[1]] },
+      { name: 'north', color: '#00CC00', positions: [corners[1], corners[0]] }
+    ];
+
+    return sides;
+  };
+
   return (
     <Box>
       <Typography variant="h2" component="h1" gutterBottom sx={{ mb: 4 }}>
@@ -452,15 +466,17 @@ const SunlightTimer: React.FC = () => {
             attribution='&copy; OpenStreetMap contributors'
           />
           <Marker position={[lat, lon]} />
-          <Polygon
-            positions={getPolygonCorners()}
-            pathOptions={{
-              color: 'red',
-              weight: 2,
-              opacity: 0.8,
-              fillOpacity: 0.2
-            }}
-          />
+          {getSidePolygons().map((side) => (
+            <Polyline
+              key={side.name}
+              positions={side.positions}
+              pathOptions={{
+                color: side.color,
+                weight: 6,
+                opacity: 0.8
+              }}
+            />
+          ))}
         </MapContainer>
       </Paper>
     </Box>
