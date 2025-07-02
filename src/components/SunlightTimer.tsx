@@ -394,10 +394,10 @@ const SunlightTimer: React.FC = () => {
               {/* Intensity bars */}
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, height: 150 }}>
                 {[
-                  { key: 'east', label: 'East', color: '#ff6b6b' },
-                  { key: 'south', label: 'South', color: '#4ecdc4' },
-                  { key: 'west', label: 'West', color: '#45b7d1' },
-                  { key: 'north', label: 'North', color: '#96ceb4' }
+                  { key: 'east', label: 'East', color: '#FFD300' },
+                  { key: 'south', label: 'South', color: '#FF0000' },
+                  { key: 'west', label: 'West', color: '#3914AF' },
+                  { key: 'north', label: 'North', color: '#00CC00' }
                 ].map(({ key, label, color }) => (
                   <Box key={key} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Typography variant="body2" sx={{ width: 40, fontSize: '0.75rem' }}>
