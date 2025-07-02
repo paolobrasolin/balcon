@@ -141,9 +141,9 @@ const SunlightTimer: React.FC = () => {
       </Typography>
 
       {/* Inputs and Map side by side */}
-      <Box sx={{ display: 'flex', gap: 3, mb: 3, alignItems: 'stretch' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, mb: 3, alignItems: { xs: 'stretch', sm: 'stretch' } }}>
         {/* Inputs stacked vertically */}
-        <Paper elevation={3} sx={{ p: 3, width: 300, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
+        <Paper elevation={3} sx={{ p: 3, width: { xs: '100%', sm: 300 }, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h6" gutterBottom>
             Settings
           </Typography>
@@ -216,13 +216,13 @@ const SunlightTimer: React.FC = () => {
         </Paper>
 
         {/* Map */}
-        <Paper elevation={3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 2 }}>
+        <Paper elevation={3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 2, minHeight: { xs: 400, sm: 'auto' } }}>
           <Box sx={{ p: 2 }}>
             <Typography variant="h6">
               Location map and sun position
             </Typography>
           </Box>
-          <Box sx={{ flex: 1, width: '100%' }}>
+          <Box sx={{ width: '100%', height: { xs: 356, sm: '100%' } }}>
             <MapContainer
               center={[lat, lon]}
               zoom={18}
