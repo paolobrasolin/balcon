@@ -142,6 +142,7 @@ const SunlightTimer: React.FC = () => {
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [results, setResults] = useState<Results>({ east: [], south: [], west: [], north: [] });
   const [intensityData, setIntensityData] = useState<IntensityResult[]>([]);
+  const [sunTimes, setSunTimes] = useState<{ sunrise: Date; sunset: Date } | null>(null);
 
   const computeIntensityData = () => {
     const intervalMinutes = 10;
@@ -150,6 +151,13 @@ const SunlightTimer: React.FC = () => {
     const start = new Date(selectedDate);
     const end = new Date(selectedDate);
     end.setHours(23, 59, 59, 999);
+
+    // Get sunrise and sunset times
+    const times = SunCalc.getTimes(selectedDate, lat, lon);
+    setSunTimes({
+      sunrise: times.sunrise,
+      sunset: times.sunset
+    });
 
     const intensityResults: IntensityResult[] = [];
     for (let d = new Date(start); d <= end; d.setMinutes(d.getMinutes() + intervalMinutes)) {
@@ -320,6 +328,20 @@ const SunlightTimer: React.FC = () => {
               Sunlight Intensity by Side
             </Typography>
             <Divider sx={{ mb: 2 }} />
+
+            {/* Legend */}
+            {sunTimes && (
+              <Box sx={{ mb: 2, display: 'flex', gap: 3, fontSize: '0.75rem', color: 'text.secondary' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={{ width: 12, height: 12, backgroundColor: '#ff9800', borderRadius: 1 }} />
+                  <span>Sunrise: {sunTimes.sunrise.toTimeString().slice(0, 5)}</span>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={{ width: 12, height: 12, backgroundColor: '#f57c00', borderRadius: 1 }} />
+                  <span>Sunset: {sunTimes.sunset.toTimeString().slice(0, 5)}</span>
+                </Box>
+              </Box>
+            )}
             <Box sx={{ height: 200, position: 'relative' }}>
               {/* Time axis labels */}
               <Box sx={{
@@ -336,6 +358,38 @@ const SunlightTimer: React.FC = () => {
                 <span>18:00</span>
                 <span>23:59</span>
               </Box>
+
+              {/* Sunrise/Sunset markers */}
+              {sunTimes && (
+                <Box sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 20,
+                  pointerEvents: 'none',
+                  zIndex: 1
+                }}>
+                  {/* Sunrise marker */}
+                  <Box sx={{
+                    position: 'absolute',
+                    left: `${((sunTimes.sunrise.getHours() * 60 + sunTimes.sunrise.getMinutes()) / (24 * 60)) * 100}%`,
+                    width: 2,
+                    height: '100%',
+                    backgroundColor: '#ff9800',
+                    transform: 'translateX(-50%)'
+                  }} />
+                  {/* Sunset marker */}
+                  <Box sx={{
+                    position: 'absolute',
+                    left: `${((sunTimes.sunset.getHours() * 60 + sunTimes.sunset.getMinutes()) / (24 * 60)) * 100}%`,
+                    width: 2,
+                    height: '100%',
+                    backgroundColor: '#f57c00',
+                    transform: 'translateX(-50%)'
+                  }} />
+                </Box>
+              )}
 
               {/* Intensity bars */}
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, height: 150 }}>
