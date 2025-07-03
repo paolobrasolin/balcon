@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 import SunIntensityAxis from './SunIntensityAxis';
 import SunIntensityBar from './SunIntensityBar';

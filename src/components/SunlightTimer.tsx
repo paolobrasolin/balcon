@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import SunCalc from 'suncalc';
 import { Typography, Box } from '@mui/material';
 import SunIntensityChart from './SunIntensityChart';
@@ -38,7 +39,7 @@ const SunlightTimer: React.FC = () => {
     const queryLat = getQueryParam('lat');
     if (queryLat !== null) {
       const parsed = parseFloat(queryLat);
-      if (!isNaN(parsed) && parsed >= -90 && parsed <= 90) {
+      if (!Number.isNaN(parsed) && parsed >= -90 && parsed <= 90) {
         return parsed;
       }
     }
@@ -49,7 +50,7 @@ const SunlightTimer: React.FC = () => {
     const queryLon = getQueryParam('lon');
     if (queryLon !== null) {
       const parsed = parseFloat(queryLon);
-      if (!isNaN(parsed) && parsed >= -180 && parsed <= 180) {
+      if (!Number.isNaN(parsed) && parsed >= -180 && parsed <= 180) {
         return parsed;
       }
     }
@@ -60,7 +61,7 @@ const SunlightTimer: React.FC = () => {
     const queryAzm = getQueryParam('azm');
     if (queryAzm !== null) {
       const parsed = parseFloat(queryAzm);
-      if (!isNaN(parsed) && parsed >= -45 && parsed <= 45) {
+      if (!Number.isNaN(parsed) && parsed >= -45 && parsed <= 45) {
         return parsed;
       }
     }
@@ -82,7 +83,7 @@ const SunlightTimer: React.FC = () => {
     updateQueryParams({ lat, lon, azm });
   }, [lat, lon, azm]);
 
-  const computeSunPositionData = () => {
+  const computeSunPositionData = useCallback(() => {
     const intervalMinutes = 15;
     const selectedDate = new Date(date);
     selectedDate.setHours(0, 0, 0, 0);
@@ -110,12 +111,12 @@ const SunlightTimer: React.FC = () => {
     }
 
     setSunPositionData(sunPositions);
-  };
+  }, [date, lat, lon]);
 
   // Compute sun position data on initial load and when date changes
   useEffect(() => {
     computeSunPositionData();
-  }, [date]); // Run when date changes
+  }, [computeSunPositionData]); // Run when date changes
 
   return (
     <Box>

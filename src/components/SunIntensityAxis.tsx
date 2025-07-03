@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
+import type React from 'react';
+import { Box } from '@mui/material';
 
 interface SunIntensityAxisProps {
   sunTimes: { sunrise: Date; sunset: Date } | null;
@@ -111,14 +111,14 @@ const SunIntensityAxis: React.FC<SunIntensityAxisProps> = ({ sunTimes, barHeight
                 pointerEvents: 'none',
               }}
             >
-              {hour.toString().padStart(2, '0') + ':00'}
+              {`${hour.toString().padStart(2, '0')}:00`}
             </Box>
           );
         })}
         {/* Sunrise/sunset time labels (rendered last, highest z-index) */}
         {specialTicks.map((tick) => (
           <Box
-            key={tick.key + '-label'}
+            key={`${tick.key}-label`}
             sx={{
               position: 'absolute',
               left: `${(tick.minutes / (24 * 60)) * 100}%`,

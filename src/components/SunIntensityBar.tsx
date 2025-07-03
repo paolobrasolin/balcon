@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { Typography, Box } from '@mui/material';
 
 interface SunPosition {
@@ -34,7 +34,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
     // Use Kasten-Young formula for all angles (more accurate than simple 1/cos)
     // AM = 1 / (sin(altitude) + 0.50572 * (altitude + 6.07995°)^(-1.6364))
     const airMass =
-      1 / (Math.sin(altitudeRadians) + 0.50572 * Math.pow((altitudeRadians * 180) / Math.PI + 6.07995, -1.6364));
+      1 / (Math.sin(altitudeRadians) + 0.50572 * ((altitudeRadians * 180) / Math.PI + 6.07995) ** -1.6364);
 
     return airMass;
   };
@@ -161,7 +161,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
 
           return (
             <Box
-              key={index}
+              key={data.time.getTime()}
               sx={{
                 position: 'absolute',
                 left: `${(index / sunPositions.length) * 100}%`,

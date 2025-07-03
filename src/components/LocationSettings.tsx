@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { TextField, Box, Paper, Typography, Divider } from '@mui/material';
 
 interface LocationSettingsProps {
@@ -50,7 +50,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           value={lat}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
-            if (!isNaN(value) && value >= -90 && value <= 90) {
+            if (!Number.isNaN(value) && value >= -90 && value <= 90) {
               onLatChange(value);
             }
           }}
@@ -68,7 +68,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           value={lon}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
-            if (!isNaN(value) && value >= -180 && value <= 180) {
+            if (!Number.isNaN(value) && value >= -180 && value <= 180) {
               onLonChange(value);
             }
           }}
@@ -86,7 +86,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           value={azm}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
-            if (!isNaN(value) && value >= -45 && value <= 45) {
+            if (!Number.isNaN(value) && value >= -45 && value <= 45) {
               onAzmChange(value);
             }
           }}

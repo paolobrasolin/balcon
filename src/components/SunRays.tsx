@@ -1,12 +1,10 @@
 import React from 'react';
-import { Marker, Polyline, useMap } from 'react-leaflet';
+import { Marker, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import SunCalc from 'suncalc';
 
 // Component to draw sun rays
 const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lon, date }) => {
-  const map = useMap();
-
   // Get sunrise and sunset times for the selected date
   const selectedDate = new Date(date);
   const sunTimes = SunCalc.getTimes(selectedDate, lat, lon);
@@ -91,8 +89,8 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
 
   return (
     <>
-      {rays.map((ray, index) => (
-        <React.Fragment key={index}>
+      {rays.map((ray) => (
+        <React.Fragment key={ray.time.getTime()}>
           <Polyline
             positions={[ray.start, ray.end]}
             pathOptions={{
