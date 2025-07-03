@@ -42,10 +42,12 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           fullWidth
           label="Latitude"
           type="number"
-          inputProps={{
-            step: 0.0001,
-            min: -90,
-            max: 90,
+          slotProps={{
+            htmlInput: {
+              step: 0.0001,
+              min: -90,
+              max: 90,
+            },
           }}
           value={lat}
           onChange={(e) => {
@@ -60,10 +62,12 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           fullWidth
           label="Longitude"
           type="number"
-          inputProps={{
-            step: 0.0001,
-            min: -180,
-            max: 180,
+          slotProps={{
+            htmlInput: {
+              step: 0.0001,
+              min: -180,
+              max: 180,
+            },
           }}
           value={lon}
           onChange={(e) => {
@@ -78,10 +82,12 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           fullWidth
           label="Southern side azimuth"
           type="number"
-          inputProps={{
-            step: 1,
-            min: -45,
-            max: 45,
+          slotProps={{
+            htmlInput: {
+              step: 1,
+              min: -45,
+              max: 45,
+            },
           }}
           value={azm}
           onChange={(e) => {
@@ -98,7 +104,9 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           type="date"
           value={date}
           onChange={(e) => onDateChange(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          slotProps={{
+            inputLabel: { shrink: true },
+          }}
         />
       </Box>
     </Paper>
