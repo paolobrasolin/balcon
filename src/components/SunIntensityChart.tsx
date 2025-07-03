@@ -3,6 +3,7 @@ import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import SunIntensityAxis from './SunIntensityAxis';
 import SunIntensityBar from './SunIntensityBar';
+import SunIntensityChartHover from './SunIntensityChartHover';
 
 interface SunPositionData {
   time: Date;
@@ -32,8 +33,7 @@ const SunIntensityChart: React.FC<SunIntensityChartProps> = ({ sunPositionData, 
         </Typography>
         <Divider sx={{ mb: 4, mt: 1 }} />
 
-        {/* Intensity bars */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, position: 'relative' }}>
           <SunIntensityAxis sunTimes={sunTimes} />
           <SunIntensityBar
             sunPositions={sunPositionData}
@@ -70,6 +70,7 @@ const SunIntensityChart: React.FC<SunIntensityChartProps> = ({ sunPositionData, 
             surfaceAltitude={Math.PI / 2}
             label={t('chart.surfaces.roof')}
           />
+          <SunIntensityChartHover sunPositionData={sunPositionData} onMouseMove={() => {}} onMouseLeave={() => {}} />
         </Box>
       </CardContent>
     </Card>
