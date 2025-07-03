@@ -1,7 +1,7 @@
-import React from 'react';
-import { Paper, Typography, Box } from '@mui/material';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
+import { Box, Paper, Typography } from '@mui/material';
 import L from 'leaflet';
+import React from 'react';
+import { MapContainer, Marker, Polyline, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import SunRays from './SunRays';
 

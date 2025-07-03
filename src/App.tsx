@@ -1,4 +1,4 @@
-import { Container, Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { Box, Container, CssBaseline, createTheme, ThemeProvider } from '@mui/material';
 import SunlightTimer from './components/SunlightTimer';
 
 // Create a dark theme to match your current styling

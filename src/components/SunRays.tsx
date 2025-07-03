@@ -1,6 +1,6 @@
+import L from 'leaflet';
 import React from 'react';
 import { Marker, Polyline } from 'react-leaflet';
-import L from 'leaflet';
 import SunCalc from 'suncalc';
 
 // Component to draw sun rays

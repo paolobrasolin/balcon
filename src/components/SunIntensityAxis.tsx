@@ -1,5 +1,5 @@
-import type React from 'react';
 import { Box } from '@mui/material';
+import type React from 'react';
 
 interface SunIntensityAxisProps {
   sunTimes: { sunrise: Date; sunset: Date } | null;

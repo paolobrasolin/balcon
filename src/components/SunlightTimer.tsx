@@ -1,10 +1,10 @@
+import { Box, Typography } from '@mui/material';
 import type React from 'react';
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SunCalc from 'suncalc';
-import { Typography, Box } from '@mui/material';
-import SunIntensityChart from './SunIntensityChart';
-import LocationSettings from './LocationSettings';
 import LocationMap from './LocationMap';
+import LocationSettings from './LocationSettings';
+import SunIntensityChart from './SunIntensityChart';
 
 // Utility functions for query string handling
 const getQueryParam = (name: string): string | null => {

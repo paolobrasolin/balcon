@@ -1,5 +1,5 @@
+import { Box, Typography } from '@mui/material';
 import type React from 'react';
-import { Typography, Box } from '@mui/material';
 
 interface SunPosition {
   azimuth: number; // in radians, 0 = North, π/2 = East, π = South, 3π/2 = West (SunCalc format)

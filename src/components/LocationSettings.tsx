@@ -1,5 +1,5 @@
+import { Box, Divider, Paper, TextField, Typography } from '@mui/material';
 import type React from 'react';
-import { TextField, Box, Paper, Typography, Divider } from '@mui/material';
 
 interface LocationSettingsProps {
   lat: number;
