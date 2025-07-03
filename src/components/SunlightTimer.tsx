@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import SunRays from './SunRays';
 import SunIntensityChart from './SunIntensityChart';
+import LocationSettings from './LocationSettings';
 
 // Fix for default markers in react-leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -204,78 +205,17 @@ const SunlightTimer: React.FC = () => {
 
       {/* Inputs and Map side by side */}
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, mb: 3, alignItems: { xs: 'stretch', sm: 'stretch' } }}>
-        {/* Inputs stacked vertically */}
-        <Paper elevation={3} sx={{ p: 3, width: { xs: '100%', sm: 300 }, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="h6" gutterBottom>
-            Settings
-          </Typography>
-          <Divider sx={{ mb: 4, mt: 1 }} />
-
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-            <TextField
-              fullWidth
-              label="Latitude"
-              type="number"
-              inputProps={{
-                step: 0.0001,
-                min: -90,
-                max: 90
-              }}
-              value={lat}
-              onChange={(e) => {
-                const value = parseFloat(e.target.value);
-                if (!isNaN(value) && value >= -90 && value <= 90) {
-                  setLat(value);
-                }
-              }}
-              helperText="Range: -90° (S) to +90° (N)"
-            />
-            <TextField
-              fullWidth
-              label="Longitude"
-              type="number"
-              inputProps={{
-                step: 0.0001,
-                min: -180,
-                max: 180
-              }}
-              value={lon}
-              onChange={(e) => {
-                const value = parseFloat(e.target.value);
-                if (!isNaN(value) && value >= -180 && value <= 180) {
-                  setLon(value);
-                }
-              }}
-              helperText="Range: -180° (W) to +180° (E)"
-            />
-            <TextField
-              fullWidth
-              label="Southern side azimuth"
-              type="number"
-              inputProps={{
-                step: 1,
-                min: -45,
-                max: 45
-              }}
-              value={azm}
-              onChange={(e) => {
-                const value = parseFloat(e.target.value);
-                if (!isNaN(value) && value >= -45 && value <= 45) {
-                  setAzm(value);
-                }
-              }}
-              helperText="Range: -45° (NW) to +45° (NE)"
-            />
-            <TextField
-              fullWidth
-              label="Date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              InputLabelProps={{ shrink: true }}
-            />
-          </Box>
-        </Paper>
+        {/* Location Settings */}
+        <LocationSettings
+          lat={lat}
+          lon={lon}
+          azm={azm}
+          date={date}
+          onLatChange={setLat}
+          onLonChange={setLon}
+          onAzmChange={setAzm}
+          onDateChange={setDate}
+        />
 
         {/* Map */}
         <Paper elevation={3} sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRadius: 2, minHeight: { xs: 400, sm: 'auto' } }}>
