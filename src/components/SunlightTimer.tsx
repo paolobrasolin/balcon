@@ -196,6 +196,58 @@ const SunlightTimer: React.FC = () => {
         balcón
       </Typography>
 
+      {/* Intensity Diagram - full width */}
+      {sunPositionData.length > 0 && (
+        <Card sx={{ mb: 3 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Sunlight intensity by surface
+            </Typography>
+            <Divider sx={{ mb: 4, mt: 1 }} />
+
+            {/* Intensity bars */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <SunIntensityAxis sunTimes={sunTimes} />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#FFD300"
+                sideAzimuth={(270 + azm) * Math.PI / 180}
+                surfaceAltitude={0}
+                label="East"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#FF0000"
+                sideAzimuth={(0 + azm) * Math.PI / 180}
+                surfaceAltitude={0}
+                label="South"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#3914AF"
+                sideAzimuth={(90 + azm) * Math.PI / 180}
+                surfaceAltitude={0}
+                label="West"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#00CC00"
+                sideAzimuth={(180 + azm) * Math.PI / 180}
+                surfaceAltitude={0}
+                label="North"
+              />
+              <SunIntensityBar
+                sunPositions={sunPositionData}
+                color="#FFFFFF"
+                sideAzimuth={0}
+                surfaceAltitude={Math.PI / 2}
+                label="Roof"
+              />
+            </Box>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Inputs and Map side by side */}
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, mb: 3, alignItems: { xs: 'stretch', sm: 'stretch' } }}>
         {/* Inputs stacked vertically */}
@@ -306,58 +358,6 @@ const SunlightTimer: React.FC = () => {
           </Box>
         </Paper>
       </Box>
-
-      {/* Intensity Diagram - full width */}
-      {sunPositionData.length > 0 && (
-        <Card sx={{ mb: 3 }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Sunlight intensity by surface
-            </Typography>
-            <Divider sx={{ mb: 4, mt: 1 }} />
-
-            {/* Intensity bars */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <SunIntensityAxis sunTimes={sunTimes} />
-              <SunIntensityBar
-                sunPositions={sunPositionData}
-                color="#FFD300"
-                sideAzimuth={(270 + azm) * Math.PI / 180}
-                surfaceAltitude={0}
-                label="East"
-              />
-              <SunIntensityBar
-                sunPositions={sunPositionData}
-                color="#FF0000"
-                sideAzimuth={(0 + azm) * Math.PI / 180}
-                surfaceAltitude={0}
-                label="South"
-              />
-              <SunIntensityBar
-                sunPositions={sunPositionData}
-                color="#3914AF"
-                sideAzimuth={(90 + azm) * Math.PI / 180}
-                surfaceAltitude={0}
-                label="West"
-              />
-              <SunIntensityBar
-                sunPositions={sunPositionData}
-                color="#00CC00"
-                sideAzimuth={(180 + azm) * Math.PI / 180}
-                surfaceAltitude={0}
-                label="North"
-              />
-              <SunIntensityBar
-                sunPositions={sunPositionData}
-                color="#FFFFFF"
-                sideAzimuth={0}
-                surfaceAltitude={Math.PI / 2}
-                label="Roof"
-              />
-            </Box>
-          </CardContent>
-        </Card>
-      )}
     </Box>
   );
 };
