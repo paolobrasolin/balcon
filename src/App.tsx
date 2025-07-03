@@ -1,5 +1,7 @@
 import { Box, Container, CssBaseline, createTheme, ThemeProvider } from '@mui/material';
+import LanguageSwitcher from './components/LanguageSwitcher';
 import SunlightTimer from './components/SunlightTimer';
+import './i18n';
 
 // Create a dark theme to match your current styling
 const darkTheme = createTheme({
@@ -22,6 +24,7 @@ const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+      <LanguageSwitcher />
       <Container maxWidth="lg">
         <Box
           sx={{

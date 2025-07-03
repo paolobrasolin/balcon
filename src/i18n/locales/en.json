@@ -1,0 +1,28 @@
+{
+  "app": {
+    "title": "balcón"
+  },
+  "settings": {
+    "title": "Settings",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "southernSideAzimuth": "Southern side azimuth",
+    "date": "Date",
+    "latitudeHelper": "Range: -90° (S) to +90° (N)",
+    "longitudeHelper": "Range: -180° (W) to +180° (E)",
+    "azimuthHelper": "Range: -45° (NW) to +45° (NE)"
+  },
+  "chart": {
+    "title": "Sunlight intensity by surface",
+    "surfaces": {
+      "east": "East",
+      "south": "South",
+      "west": "West",
+      "north": "North",
+      "roof": "Roof"
+    }
+  },
+  "map": {
+    "title": "Location map and sun position"
+  }
+}

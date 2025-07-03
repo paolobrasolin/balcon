@@ -1,0 +1,28 @@
+{
+  "app": {
+    "title": "balcón"
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "latitude": "Latitudine",
+    "longitude": "Longitudine",
+    "southernSideAzimuth": "Azimuth del lato sud",
+    "date": "Data",
+    "latitudeHelper": "Intervallo: -90° (S) a +90° (N)",
+    "longitudeHelper": "Intervallo: -180° (O) a +180° (E)",
+    "azimuthHelper": "Intervallo: -45° (NO) a +45° (NE)"
+  },
+  "chart": {
+    "title": "Intensità della luce solare sulle superfici",
+    "surfaces": {
+      "east": "Est",
+      "south": "Sud",
+      "west": "Ovest",
+      "north": "Nord",
+      "roof": "Tetto"
+    }
+  },
+  "map": {
+    "title": "Mappa della localizzazione e posizione del sole"
+  }
+}

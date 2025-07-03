@@ -1,6 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import L from 'leaflet';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, Polyline, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import SunRays from './SunRays';
@@ -32,6 +33,7 @@ interface LocationMapProps {
 }
 
 const LocationMap: React.FC<LocationMapProps> = ({ lat, lon, azm, date }) => {
+  const { t } = useTranslation();
   const getSidePolygons = () => {
     const sizeMeters = 10; // 10 meter square
     const orientationRad = (-azm * Math.PI) / 180;
@@ -83,7 +85,7 @@ const LocationMap: React.FC<LocationMapProps> = ({ lat, lon, azm, date }) => {
       }}
     >
       <Box sx={{ p: 2 }}>
-        <Typography variant="h6">Location map and sun position</Typography>
+        <Typography variant="h6">{t('map.title')}</Typography>
       </Box>
       <Box sx={{ width: '100%', height: { xs: 356, sm: '100%' } }}>
         <MapContainer center={[lat, lon]} zoom={18} style={{ height: '100%', width: '100%' }}>

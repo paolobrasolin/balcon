@@ -1,5 +1,6 @@
 import { Box, Divider, Paper, TextField, Typography } from '@mui/material';
 import type React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LocationSettingsProps {
   lat: number;
@@ -22,6 +23,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
   onAzmChange,
   onDateChange,
 }) => {
+  const { t } = useTranslation();
   return (
     <Paper
       elevation={3}
@@ -34,13 +36,13 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
       }}
     >
       <Typography variant="h6" gutterBottom>
-        Settings
+        {t('settings.title')}
       </Typography>
       <Divider sx={{ mb: 4, mt: 1 }} />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
         <TextField
           fullWidth
-          label="Latitude"
+          label={t('settings.latitude')}
           type="number"
           slotProps={{
             htmlInput: {
@@ -56,11 +58,11 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
               onLatChange(value);
             }
           }}
-          helperText="Range: -90° (S) to +90° (N)"
+          helperText={t('settings.latitudeHelper')}
         />
         <TextField
           fullWidth
-          label="Longitude"
+          label={t('settings.longitude')}
           type="number"
           slotProps={{
             htmlInput: {
@@ -76,11 +78,11 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
               onLonChange(value);
             }
           }}
-          helperText="Range: -180° (W) to +180° (E)"
+          helperText={t('settings.longitudeHelper')}
         />
         <TextField
           fullWidth
-          label="Southern side azimuth"
+          label={t('settings.southernSideAzimuth')}
           type="number"
           slotProps={{
             htmlInput: {
@@ -96,11 +98,11 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
               onAzmChange(value);
             }
           }}
-          helperText="Range: -45° (NW) to +45° (NE)"
+          helperText={t('settings.azimuthHelper')}
         />
         <TextField
           fullWidth
-          label="Date"
+          label={t('settings.date')}
           type="date"
           value={date}
           onChange={(e) => onDateChange(e.target.value)}

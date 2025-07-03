@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import SunCalc from 'suncalc';
 import LocationMap from './LocationMap';
 import LocationSettings from './LocationSettings';
@@ -34,6 +35,7 @@ interface SunPositionData {
   };
 }
 const SunlightTimer: React.FC = () => {
+  const { t } = useTranslation();
   // Initialize state with query parameters or defaults
   const getInitialLat = (): number => {
     const queryLat = getQueryParam('lat');
@@ -121,7 +123,7 @@ const SunlightTimer: React.FC = () => {
   return (
     <Box>
       <Typography variant="h2" component="h1" gutterBottom sx={{ mb: 4 }}>
-        balcón
+        {t('app.title')}
       </Typography>
 
       {/* Intensity Chart */}
