@@ -17,11 +17,7 @@ interface SunIntensityChartProps {
   azm: number;
 }
 
-const SunIntensityChart: React.FC<SunIntensityChartProps> = ({
-  sunPositionData,
-  sunTimes,
-  azm
-}) => {
+const SunIntensityChart: React.FC<SunIntensityChartProps> = ({ sunPositionData, sunTimes, azm }) => {
   if (sunPositionData.length === 0) {
     return null;
   }
@@ -40,28 +36,28 @@ const SunIntensityChart: React.FC<SunIntensityChartProps> = ({
           <SunIntensityBar
             sunPositions={sunPositionData}
             color="#FFD300"
-            sideAzimuth={(270 + azm) * Math.PI / 180}
+            sideAzimuth={((270 + azm) * Math.PI) / 180}
             surfaceAltitude={0}
             label="East"
           />
           <SunIntensityBar
             sunPositions={sunPositionData}
             color="#FF0000"
-            sideAzimuth={(0 + azm) * Math.PI / 180}
+            sideAzimuth={((0 + azm) * Math.PI) / 180}
             surfaceAltitude={0}
             label="South"
           />
           <SunIntensityBar
             sunPositions={sunPositionData}
             color="#3914AF"
-            sideAzimuth={(90 + azm) * Math.PI / 180}
+            sideAzimuth={((90 + azm) * Math.PI) / 180}
             surfaceAltitude={0}
             label="West"
           />
           <SunIntensityBar
             sunPositions={sunPositionData}
             color="#00CC00"
-            sideAzimuth={(180 + azm) * Math.PI / 180}
+            sideAzimuth={((180 + azm) * Math.PI) / 180}
             surfaceAltitude={0}
             label="North"
           />
@@ -78,4 +74,4 @@ const SunIntensityChart: React.FC<SunIntensityChartProps> = ({
   );
 };
 
-export default SunIntensityChart; 
+export default SunIntensityChart;

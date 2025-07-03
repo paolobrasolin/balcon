@@ -41,7 +41,7 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
 
       // Convert meters to lat/lon offsets
       const latOffset = rayLength / 111320;
-      const lonOffset = rayLength / (111320 * Math.cos(lat * Math.PI / 180));
+      const lonOffset = rayLength / (111320 * Math.cos((lat * Math.PI) / 180));
 
       // Calculate end point of ray
       const azimuthRad = sunPos.azimuth;
@@ -57,7 +57,7 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
         altitude: sunPos.altitude,
         azimuth: sunPos.azimuth,
         isSunrise: false,
-        isSunset: false
+        isSunset: false,
       });
     }
   }
@@ -69,7 +69,7 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
     const rayLength = baseLength * Math.cos(sunPos.altitude); // Long ray for horizon
 
     const latOffset = rayLength / 111320;
-    const lonOffset = rayLength / (111320 * Math.cos(lat * Math.PI / 180));
+    const lonOffset = rayLength / (111320 * Math.cos((lat * Math.PI) / 180));
 
     const azimuthRad = sunPos.azimuth;
     const endLat = lat - Math.cos(azimuthRad) * latOffset;
@@ -82,7 +82,7 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
       altitude: sunPos.altitude,
       azimuth: sunPos.azimuth,
       isSunrise,
-      isSunset: !isSunrise
+      isSunset: !isSunrise,
     });
   };
 
@@ -99,7 +99,7 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
               color: ray.isSunrise ? '#FF6B35' : ray.isSunset ? '#FF8C42' : '#FFD700',
               weight: ray.isSunrise || ray.isSunset ? 4 : 2,
               opacity: ray.isSunrise || ray.isSunset ? 0.9 : 0.7,
-              dashArray: ray.isSunrise || ray.isSunset ? '10, 5' : '5, 5'
+              dashArray: ray.isSunrise || ray.isSunset ? '10, 5' : '5, 5',
             }}
           />
           {/* Add time label at the end of each ray */}
@@ -118,7 +118,7 @@ const SunRays: React.FC<{ lat: number; lon: number; date: string }> = ({ lat, lo
                 border: 1px solid ${ray.isSunrise ? '#FF6B35' : ray.isSunset ? '#FF8C42' : '#FFD700'};
               ">${ray.isSunrise ? '🌅' : ray.isSunset ? '🌇' : ''}${ray.time.toTimeString().slice(0, 5)}</div>`,
               iconSize: [50, 20],
-              iconAnchor: [25, 10]
+              iconAnchor: [25, 10],
             })}
           />
         </React.Fragment>

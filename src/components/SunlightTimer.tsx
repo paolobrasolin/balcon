@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SunCalc from 'suncalc';
-import {
-  Typography,
-  Box,
-} from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import SunIntensityChart from './SunIntensityChart';
 import LocationSettings from './LocationSettings';
 import LocationMap from './LocationMap';
@@ -75,7 +72,10 @@ const SunlightTimer: React.FC = () => {
   const [azm, setAzm] = useState<number>(getInitialAzm);
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [sunPositionData, setSunPositionData] = useState<SunPositionData[]>([]);
-  const [sunTimes, setSunTimes] = useState<{ sunrise: Date; sunset: Date } | null>(null);
+  const [sunTimes, setSunTimes] = useState<{
+    sunrise: Date;
+    sunset: Date;
+  } | null>(null);
 
   // Update query parameters when lat, lon, or azm change
   useEffect(() => {
@@ -94,7 +94,7 @@ const SunlightTimer: React.FC = () => {
     const times = SunCalc.getTimes(selectedDate, lat, lon);
     setSunTimes({
       sunrise: times.sunrise,
-      sunset: times.sunset
+      sunset: times.sunset,
     });
 
     const sunPositions: SunPositionData[] = [];
@@ -104,8 +104,8 @@ const SunlightTimer: React.FC = () => {
         time: new Date(d),
         position: {
           azimuth: position.azimuth,
-          altitude: position.altitude
-        }
+          altitude: position.altitude,
+        },
       });
     }
 
@@ -117,8 +117,6 @@ const SunlightTimer: React.FC = () => {
     computeSunPositionData();
   }, [date]); // Run when date changes
 
-
-
   return (
     <Box>
       <Typography variant="h2" component="h1" gutterBottom sx={{ mb: 4 }}>
@@ -126,14 +124,18 @@ const SunlightTimer: React.FC = () => {
       </Typography>
 
       {/* Intensity Chart */}
-      <SunIntensityChart
-        sunPositionData={sunPositionData}
-        sunTimes={sunTimes}
-        azm={azm}
-      />
+      <SunIntensityChart sunPositionData={sunPositionData} sunTimes={sunTimes} azm={azm} />
 
       {/* Inputs and Map side by side */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, mb: 3, alignItems: { xs: 'stretch', sm: 'stretch' } }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: 3,
+          mb: 3,
+          alignItems: { xs: 'stretch', sm: 'stretch' },
+        }}
+      >
         {/* Location Settings */}
         <LocationSettings
           lat={lat}
@@ -147,12 +149,7 @@ const SunlightTimer: React.FC = () => {
         />
 
         {/* Map */}
-        <LocationMap
-          lat={lat}
-          lon={lon}
-          azm={azm}
-          date={date}
-        />
+        <LocationMap lat={lat} lon={lon} azm={azm} date={date} />
       </Box>
     </Box>
   );

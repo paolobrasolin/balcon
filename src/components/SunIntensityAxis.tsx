@@ -35,13 +35,19 @@ const SunIntensityAxis: React.FC<SunIntensityAxisProps> = ({ sunTimes, barHeight
   const specialTicks = getSpecialTicks();
 
   // Helper to check if a minute is a special tick
-  const isSpecialTick = (minutes: number) =>
-    specialTicks.find(t => Math.abs(t.minutes - minutes) < 1);
+  const isSpecialTick = (minutes: number) => specialTicks.find((t) => Math.abs(t.minutes - minutes) < 1);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
       {/* Empty space for alignment with intensity bars */}
-      <Box sx={{ height: barHeight, width: 40, display: 'flex', alignItems: 'center' }} />
+      <Box
+        sx={{
+          height: barHeight,
+          width: 40,
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      />
       <Box sx={{ flex: 1, position: 'relative', height: barHeight }}>
         {/* Ticks */}
         {/* 15m and hour ticks */}
@@ -70,7 +76,7 @@ const SunIntensityAxis: React.FC<SunIntensityAxisProps> = ({ sunTimes, barHeight
           );
         })}
         {/* Special sunrise/sunset ticks */}
-        {specialTicks.map(tick => (
+        {specialTicks.map((tick) => (
           <Box
             key={tick.key}
             sx={{
@@ -110,7 +116,7 @@ const SunIntensityAxis: React.FC<SunIntensityAxisProps> = ({ sunTimes, barHeight
           );
         })}
         {/* Sunrise/sunset time labels (rendered last, highest z-index) */}
-        {specialTicks.map(tick => (
+        {specialTicks.map((tick) => (
           <Box
             key={tick.key + '-label'}
             sx={{

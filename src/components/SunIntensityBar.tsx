@@ -19,21 +19,22 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
   color,
   sideAzimuth,
   surfaceAltitude,
-  label
+  label,
 }) => {
   /**
- * Calculate air mass factor based on sun altitude using Kasten-Young formula
- * Air mass is the path length of solar radiation through the atmosphere
- * @param altitudeRadians Sun altitude in radians
- * @returns Air mass factor (1 at zenith, increases as sun approaches horizon)
- */
+   * Calculate air mass factor based on sun altitude using Kasten-Young formula
+   * Air mass is the path length of solar radiation through the atmosphere
+   * @param altitudeRadians Sun altitude in radians
+   * @returns Air mass factor (1 at zenith, increases as sun approaches horizon)
+   */
   const calculateAirMass = (altitudeRadians: number): number => {
     // Handle edge case when sun is at or below horizon
     if (altitudeRadians <= 0) return Infinity; // No direct sunlight
 
     // Use Kasten-Young formula for all angles (more accurate than simple 1/cos)
     // AM = 1 / (sin(altitude) + 0.50572 * (altitude + 6.07995°)^(-1.6364))
-    const airMass = 1 / (Math.sin(altitudeRadians) + 0.50572 * Math.pow((altitudeRadians * 180 / Math.PI) + 6.07995, -1.6364));
+    const airMass =
+      1 / (Math.sin(altitudeRadians) + 0.50572 * Math.pow((altitudeRadians * 180) / Math.PI + 6.07995, -1.6364));
 
     return airMass;
   };
@@ -61,7 +62,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
     // Use a two-parameter model: τ = τ0 * exp(-k * (AM - 1))
     // where τ0 is transmittance at AM=1 and k is the decay rate
     const tau0 = 0.8; // Transmittance at zenith (AM=1)
-    const k = 0.08;   // Decay rate per air mass unit
+    const k = 0.08; // Decay rate per air mass unit
 
     const transmittance = tau0 * Math.exp(-k * (airMass - 1));
 
@@ -75,7 +76,11 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
    * @param surfaceAltitudeRadians Altitude of the surface in radians (0 = horizontal, π/2 = vertical)
    * @returns Intensity value (0-1, where 1 is maximum intensity)
    */
-  const calculateIntensity = (sunPosition: SunPosition, sideAzimuthRadians: number, surfaceAltitudeRadians: number): number => {
+  const calculateIntensity = (
+    sunPosition: SunPosition,
+    sideAzimuthRadians: number,
+    surfaceAltitudeRadians: number,
+  ): number => {
     const { azimuth: sunAzimuth, altitude: sunAltitude } = sunPosition;
 
     // Convert sun position to 3D direction vector
@@ -88,7 +93,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
     const sunDirection = {
       x: Math.sin(azimuthRad) * Math.cos(altitudeRad),
       y: Math.cos(azimuthRad) * Math.cos(altitudeRad),
-      z: Math.sin(altitudeRad)
+      z: Math.sin(altitudeRad),
     };
 
     // Calculate surface normal for this surface
@@ -98,14 +103,12 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
     const surfaceNormal = {
       x: Math.sin(sideAzimuthRadians) * Math.cos(surfaceAltitudeRadians),
       y: Math.cos(sideAzimuthRadians) * Math.cos(surfaceAltitudeRadians),
-      z: Math.sin(surfaceAltitudeRadians)
+      z: Math.sin(surfaceAltitudeRadians),
     };
 
     // Calculate dot product (intensity = dot product of sun direction and surface normal)
     const dotProduct =
-      sunDirection.x * surfaceNormal.x +
-      sunDirection.y * surfaceNormal.y +
-      sunDirection.z * surfaceNormal.z;
+      sunDirection.x * surfaceNormal.x + sunDirection.y * surfaceNormal.y + sunDirection.z * surfaceNormal.z;
 
     // Apply intensity calculation with proper handling of negative values
     // When dot product is negative, the sun is behind the surface (no direct light)
@@ -124,28 +127,33 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Typography variant="body2" sx={{
-        width: 40,
-        fontSize: '0.75rem',
-        color: 'white',
-        fontWeight: 'bold',
-        backgroundColor: color,
-        borderRadius: 0.5,
-        textAlign: 'center',
-        py: 0.25,
-        px: 0.5,
-        textShadow: '0px 0px 2px rgba(0,0,0,1), 0px 0px 4px rgba(0,0,0,1)'
-      }}>
+      <Typography
+        variant="body2"
+        sx={{
+          width: 40,
+          fontSize: '0.75rem',
+          color: 'white',
+          fontWeight: 'bold',
+          backgroundColor: color,
+          borderRadius: 0.5,
+          textAlign: 'center',
+          py: 0.25,
+          px: 0.5,
+          textShadow: '0px 0px 2px rgba(0,0,0,1), 0px 0px 4px rgba(0,0,0,1)',
+        }}
+      >
         {label}
       </Typography>
-      <Box sx={{
-        flex: 1,
-        height: 20,
-        position: 'relative',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 1,
-        overflow: 'hidden'
-      }}>
+      <Box
+        sx={{
+          flex: 1,
+          height: 20,
+          position: 'relative',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: 1,
+          overflow: 'hidden',
+        }}
+      >
         {sunPositions.map((data, index) => {
           const intensity = calculateIntensity(data.position, sideAzimuth, surfaceAltitude);
           const width = 100 / sunPositions.length;
@@ -161,7 +169,7 @@ const SunIntensityBar: React.FC<SunIntensityBarProps> = ({
                 height: height,
                 bottom: 0,
                 backgroundColor: 'white',
-                transition: 'height 0.2s'
+                transition: 'height 0.2s',
               }}
             />
           );

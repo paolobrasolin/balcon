@@ -20,10 +20,19 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
   onLatChange,
   onLonChange,
   onAzmChange,
-  onDateChange
+  onDateChange,
 }) => {
   return (
-    <Paper elevation={3} sx={{ p: 3, width: { xs: '100%', sm: 300 }, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        width: { xs: '100%', sm: 300 },
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Typography variant="h6" gutterBottom>
         Settings
       </Typography>
@@ -36,7 +45,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           inputProps={{
             step: 0.0001,
             min: -90,
-            max: 90
+            max: 90,
           }}
           value={lat}
           onChange={(e) => {
@@ -54,7 +63,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           inputProps={{
             step: 0.0001,
             min: -180,
-            max: 180
+            max: 180,
           }}
           value={lon}
           onChange={(e) => {
@@ -72,7 +81,7 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
           inputProps={{
             step: 1,
             min: -45,
-            max: 45
+            max: 45,
           }}
           value={azm}
           onChange={(e) => {
@@ -96,4 +105,4 @@ const LocationSettings: React.FC<LocationSettingsProps> = ({
   );
 };
 
-export default LocationSettings; 
+export default LocationSettings;

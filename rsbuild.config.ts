@@ -4,9 +4,9 @@ import { pluginReact } from '@rsbuild/plugin-react';
 export default defineConfig({
   plugins: [pluginReact()],
   server: {
-    "base": "/balcon/",
+    base: '/balcon/',
   },
   html: {
-    "title": "balcón",
+    title: 'balcón',
   },
 });
